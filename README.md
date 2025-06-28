@@ -1607,3 +1607,106 @@ A verification log showing the backup integrity.
 
 Ans:
 
+root@SomuMH:/# pwd
+/
+root@SomuMH:/# whoami
+root
+root@SomuMH:/# /home
+-bash: /home: Is a directory
+root@SomuMH:/# cd /hom
+-bash: cd: /hom: No such file or directory
+root@SomuMH:/# cd /home
+root@SomuMH:/home# ls -ltr
+total 12
+drwxr-x--- 7 shiremath shiremath 4096 Jun 28 06:32 shiremath
+drwxr-x--- 3 Sarah     Sarah     4096 Jun 28 11:08 Sarah
+drwxr-x--- 3 mike      mike      4096 Jun 28 11:08 mike
+root@SomuMH:/home# cd Sarah
+root@SomuMH:/home/Sarah# ls -ltr
+total 4
+drwx------ 2 Sarah Sarah 4096 Jun 28 11:08 workspace
+root@SomuMH:/home/Sarah# vi apache_backup.sh
+root@SomuMH:/home/Sarah# ls -ltr
+total 8
+drwx------ 2 Sarah Sarah 4096 Jun 28 11:08 workspace
+-rw-r--r-- 1 root  root   407 Jun 28 11:35 apache_backup.sh
+root@SomuMH:/home/Sarah# cat apache_backup.sh
+#!/bin/bash
+backup_dir="/backups"
+filename="apache_backup_$(date +%F).tar.gz"
+logfile="$backup_dir/apache_verify.log"
+
+mkdir -p "$backup_dir"
+
+tar -czvf "$backup_dir/$filename" /etc/httpd/ /var/www/html/ > "$logfile" 2>&1
+echo "Backup created: $filename" >> "$logfile"
+
+# Verify contents
+echo "Verifying backup..." >> "$logfile"
+tar -tzf "$backup_dir/$filename" >> "$logfile" 2>&1
+echo "----" >> "$logfile"
+root@SomuMH:/home/Sarah# chmod 755 apache_backup.sh
+root@SomuMH:/home/Sarah# ls -ltr
+total 8
+drwx------ 2 Sarah Sarah 4096 Jun 28 11:08 workspace
+-rwxr-xr-x 1 root  root   407 Jun 28 11:35 apache_backup.sh
+root@SomuMH:/home/Sarah# cd ..
+root@SomuMH:/home# ls -ltr
+total 12
+drwxr-x--- 7 shiremath shiremath 4096 Jun 28 06:32 shiremath
+drwxr-x--- 3 mike      mike      4096 Jun 28 11:08 mike
+drwxr-x--- 3 Sarah     Sarah     4096 Jun 28 11:35 Sarah
+root@SomuMH:/home# cd #!/bin/bash
+backup_dir="/backups"
+filename="apache_backup_$(date +%F).tar.gz"
+logfile="$backup_dir/apache_verify.log"
+
+mkdir -p "$backup_dir"
+
+tar -czvf "$backup_dir/$filename" /etc/httpd/ /var/www/html/ > "$logfile" 2>&1
+echo "Backup created: $filename" >> "$logfile"
+
+# Verify contents
+echo "Verifying backup..." >> "$logfile"
+tar -tzf "$backup_dir/$filename" >> "$logfile" 2>&1
+echo "----" >> "$logfile"^C
+root@SomuMH:/home# ^C
+root@SomuMH:/home# ^C
+root@SomuMH:/home# ^C
+root@SomuMH:/home# ls -ltr
+total 12
+drwxr-x--- 7 shiremath shiremath 4096 Jun 28 06:32 shiremath
+drwxr-x--- 3 mike      mike      4096 Jun 28 11:08 mike
+drwxr-x--- 3 Sarah     Sarah     4096 Jun 28 11:35 Sarah
+root@SomuMH:/home# cd mike
+root@SomuMH:/home/mike# ls -ltr
+total 4
+drwx------ 2 mike mike 4096 Jun 28 11:08 workspace
+root@SomuMH:/home/mike# vi nginx_backup.sh
+root@SomuMH:/home/mike# chmod 755 nginx_backup.sh
+root@SomuMH:/home/mike# ls -ltr
+total 8
+drwx------ 2 mike mike 4096 Jun 28 11:08 workspace
+-rwxr-xr-x 1 root root  413 Jun 28 11:36 nginx_backup.sh
+root@SomuMH:/home/mike# cat nginx_backup.sh
+#!/bin/bash
+backup_dir="/backups"
+filename="nginx_backup_$(date +%F).tar.gz"
+logfile="$backup_dir/nginx_verify.log"
+
+mkdir -p "$backup_dir"
+
+tar -czvf "$backup_dir/$filename" /etc/nginx/ /usr/share/nginx/html/ > "$logfile" 2>&1
+echo "Backup created: $filename" >> "$logfile"
+
+# Verify contents
+echo "Verifying backup..." >> "$logfile"
+tar -tzf "$backup_dir/$filename" >> "$logfile" 2>&1
+echo "----" >> "$logfile"
+root@SomuMH:/home/mike# ls -ltr
+total 8
+drwx------ 2 mike mike 4096 Jun 28 11:08 workspace
+-rwxr-xr-x 1 root root  413 Jun 28 11:36 nginx_backup.sh
+root@SomuMH:/home/mike# crontab -e
+crontab: installing new crontab
+root@SomuMH:/home/mike#
